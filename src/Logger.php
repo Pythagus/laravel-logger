@@ -2,6 +2,8 @@
 
 namespace Pythagus\LaravelLogger;
 
+use Throwable;
+use anlutro\cURL\cURL;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Pythagus\LaravelLogger\Loggers\RequestLogger;
@@ -43,5 +45,20 @@ class Logger {
      */
     public static function response(Response $response) {
         return (new ResponseLogger())->register($response) ;
+    }
+
+    /**
+     * Make a cURL call to send the given 
+     * array data.
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function send(array $data) {
+        try {
+            $request = (new cURL())->newJsonRequest('POST', 'localhost', $data) ;
+            $request->setHeader('x-api-key', 'KEY') ;
+            $request->send() ;
+        } catch(Throwable $ignored) {}
     }
 }

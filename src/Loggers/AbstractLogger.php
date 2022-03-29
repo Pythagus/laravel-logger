@@ -2,6 +2,8 @@
 
 namespace Pythagus\LaravelLogger\Loggers;
 
+use Pythagus\LaravelLogger\Logger;
+
 /**
  * Class AbstractLogger
  * @package Pythagus\LaravelLogger\Loggers
@@ -37,10 +39,6 @@ abstract class AbstractLogger {
             return ;
         }
 
-        $data = $this->objectAsArray($object) ;
-        
-        var_dump($data) ;
-
-        // TODO
+        Logger::send($this->objectAsArray($object)) ;
     }
 }
