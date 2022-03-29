@@ -46,6 +46,9 @@ class LoggerServiceProvider extends ServiceProvider {
         $this->publish(
             LoggerServiceProvider::CONFIG_FILE, config_path($this->packageKey().'.php'), 'config'
         ) ;
+
+        // Add the database query listener.
+        Logger::database()->listener() ;
     }
   
     /**
