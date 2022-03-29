@@ -17,6 +17,13 @@ use Pythagus\LaravelLogger\Logger;
 class LoggerMiddleware {
 
     /**
+     * Header key used to store the request identifier.
+     * 
+     * @var string
+     */
+    public const HEADER_KEY = 'X-Request-ID' ;
+
+    /**
      * Add the Request ID header if needed.
      *
      * @param Request $request
@@ -27,11 +34,11 @@ class LoggerMiddleware {
     public function handle(Request $request, Closure $next) {
         $uuid = $this->getRequestUuid($request) ;
         $_SERVER['HTTP_X_REQUEST_ID'] = $uuid ;
-        $request->headers->set('X-Request-ID', $uuid) ;
+        $request->headers->set(LoggerMiddleware::HEADER_KEY, $uuid) ;
 
         Logger::request($request) ;
         $response = $next($request) ;
-        $response->headers->set('X-Request-ID', $uuid) ;
+        $response->headers->set(LoggerMiddleware::HEADER_KEY, $uuid) ;
         Logger::response($response) ;
 
         return $response ;
@@ -44,7 +51,7 @@ class LoggerMiddleware {
      * @return string
      */
     protected function getRequestUuid(Request $request) {
-        $uuid = $request->headers->get('X-Request-ID') ;
+        $uuid = $request->headers->get(LoggerMiddleware::HEADER_KEY) ;
 
         if(is_null($uuid)) {
             $uuid = Str::uuid()->toString() ;

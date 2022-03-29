@@ -3,7 +3,6 @@
 namespace Pythagus\LaravelLogger\Loggers;
 
 use Illuminate\Http\Request;
-use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 
 /**
  * Class RequestLogger
@@ -28,9 +27,9 @@ class RequestLogger extends AbstractLogger {
      */
     protected function objectAsArray($request): array {
         return [
-            'uuid' => $request->headers->get(LoggerMiddleware::HEADER_KEY),
+            'uuid'   => $this->getRequestUuid($request),
             'header' => $request->headers->all(),
-            'url' => [
+            'url'    => [
                 'scheme' => $request->getScheme(),
                 'host'   => $request->getHttpHost(),
                 'uri'    => $request->path(),
