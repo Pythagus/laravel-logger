@@ -24,7 +24,7 @@ class LoggerServiceProvider extends ServiceProvider {
      *
      * @const string
      */
-    private const CONFIG_FILE = __DIR__ . '/config/logger.php' ;
+    private const CONFIG_FILE = __DIR__ . '/config.php' ;
 
     /**
      * Register the service provider.
