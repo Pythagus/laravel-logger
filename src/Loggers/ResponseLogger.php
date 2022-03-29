@@ -26,6 +26,10 @@ class ResponseLogger extends AbstractLogger {
      * @param Response $response
      */
     protected function objectAsArray($response): array {
-        return [] ; // TODO
+        return [
+            'header' => $response->headers->all(),
+            'status' => $response->getStatusCode(),
+            'date'   => now()->timestamp
+        ] ;
     }
 }
