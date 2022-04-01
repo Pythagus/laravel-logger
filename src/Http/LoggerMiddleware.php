@@ -32,14 +32,17 @@ class LoggerMiddleware {
      * @return Response
      */
     public function handle(Request $request, Closure $next) {
-        $uuid = $this->getRequestUuid($request) ;
+        $uuid = LoggerMiddleware::getRequestUuid($request) ;
         $_SERVER['HTTP_X_REQUEST_ID'] = $uuid ;
         $request->headers->set(LoggerMiddleware::HEADER_KEY, $uuid) ;
 
         Logger::request($request) ;
         $response = $next($request) ;
-        $response->headers->set(LoggerMiddleware::HEADER_KEY, $uuid) ;
-        Logger::response($response) ;
+
+        if($response) {
+            $response->headers->set(LoggerMiddleware::HEADER_KEY, $uuid) ;
+            Logger::response($response) ;
+        }
 
         return $response ;
     }
@@ -50,7 +53,7 @@ class LoggerMiddleware {
      * @param Request $request
      * @return string
      */
-    protected function getRequestUuid(Request $request) {
+    public static function getRequestUuid(Request $request) {
         $uuid = $request->headers->get(LoggerMiddleware::HEADER_KEY) ;
 
         if(is_null($uuid)) {

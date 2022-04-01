@@ -3,6 +3,7 @@
 namespace Pythagus\LaravelLogger\Loggers;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class ResponseLogger
@@ -26,10 +27,16 @@ class ResponseLogger extends AbstractLogger {
      * @param Response $response
      */
     protected function objectAsArray($response): array {
-        return [
-            'header' => $response->headers->all(),
+        $data = [
             'status' => $response->getStatusCode(),
-            'date'   => now()->timestamp
+            'date'   => now()->timestamp,
+            'target' => null,
         ] ;
+
+        if($response instanceof RedirectResponse) {
+            $data['target'] = $response->getTargetUrl() ;
+        }
+
+        return $data ;
     }
 }

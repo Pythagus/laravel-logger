@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Pythagus\LaravelLogger\Loggers\RequestLogger;
 use Pythagus\LaravelLogger\Loggers\ResponseLogger;
 use Pythagus\LaravelLogger\Loggers\DatabaseQueryLogger;
+use Pythagus\LaravelLogger\Loggers\ExceptionLogger;
 
 /**
  * Class Logger
@@ -25,6 +26,15 @@ class Logger {
      */
     public static function database() {
         return new DatabaseQueryLogger() ;
+    }
+
+    /**
+     * Create a new ExceptionLogger instance.
+     *
+     * @return ExceptionLogger
+     */
+    public static function error() {
+        return new ExceptionLogger() ;
     }
 
     /**
@@ -56,6 +66,13 @@ class Logger {
      */
     public static function send(array $data) {
         try {
+            // TODO to delete
+            FileLogger::report($data) ;
+
+            echo "<pre>" ;
+            var_dump($data) ;
+            //exit ;
+
             $request = (new cURL())->newJsonRequest('POST', 'localhost', $data) ;
             $request->setHeader('x-api-key', 'KEY') ;
             $request->send() ;

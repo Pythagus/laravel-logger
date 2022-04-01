@@ -27,21 +27,11 @@ class DatabaseQueryLogger extends AbstractLogger {
      * @param QueryExecuted $event
      */
     protected function objectAsArray($event): array {
-        $request = request() ;
-        $uuid    = null ;
-
-        if($request) {
-            $uuid = $this->getRequestUuid($request) ;
-        }
-
         return [
             'query' => [
                 'sql'            => $event->sql,
                 'bindings'       => $event->bindings,
                 'execution_time' => $event->time,
-            ],
-            'request' => [
-                'uuid' => $uuid,
             ],
         ] ;
     }

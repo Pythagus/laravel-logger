@@ -26,16 +26,40 @@ class RequestLogger extends AbstractLogger {
      * @param Request $request
      */
     protected function objectAsArray($request): array {
-        return [
-            'uuid'   => $this->getRequestUuid($request),
-            'header' => $request->headers->all(),
+        $user = $request->user() ;
+        $data = [
+            'header' => [
+                'user-agent' => $request->headers->get('user-agent'),
+                'accept'     => $request->headers->get('accept'),
+            ],
+            'cookie' => $request->cookies->all(),
+            'locale' => $request->getLocale(),
             'url'    => [
                 'scheme' => $request->getScheme(),
                 'host'   => $request->getHttpHost(),
                 'uri'    => $request->path(),
                 'secure' => $request->secure(),
             ],
-            'user' => $request->user()->toArray()
+            'route'   => null,
+            'method'  => $request->getMethod(),
+            'version' => $request->getProtocolVersion(),
+            'ip'      => $request->ip(),
+            'user'    => $user ? $user->toArray() : null,
+            'content' => $request->except('password', 'password_confirmation'),
         ] ;
+
+        // Route can be null when an exception occured
+        // before the HTTP kernel was loaded.
+        $route = $request->route() ;
+        if($route) {
+            $data['route'] = [
+                'name'       => $route->getName() ?? null,
+                'parameters' => $route->parameters(),
+                'middleware' => $route->middleware(),
+                'controller' => class_basename($route->getAction('controller')),
+            ] ;
+        }
+
+        return $data ;
     }
 }

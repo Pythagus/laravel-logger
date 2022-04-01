@@ -4,6 +4,7 @@ namespace Pythagus\LaravelLogger\Loggers;
 
 use Pythagus\LaravelLogger\Logger;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 
 /**
@@ -41,16 +42,23 @@ abstract class AbstractLogger {
             return ;
         }
 
-        Logger::send($this->objectAsArray($object)) ;
+        $data = array_merge([
+            'uuid' => LoggerMiddleware::getRequestUuid(request()),
+        ], $this->objectAsArray($object)) ;
+
+        Logger::send($data) ;
     }
 
     /**
-     * Get the request identifier.
+     * Get the header interesting values.
      *
-     * @param Request $request
+     * @param Request|Response $object
      * @return void
      */
-    protected function getRequestUuid(Request $request) {
-        return $request->headers->get(LoggerMiddleware::HEADER_KEY) ;
+    protected function getHttpHeader($object) {
+        return [
+            'user-agent' => $object->headers->get('user-agent'),
+            'accept'     => $object->headers->get('accept'),
+        ] ;
     }
 }
