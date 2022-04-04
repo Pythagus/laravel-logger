@@ -32,9 +32,7 @@ class LoggerServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        $this->mergeConfigFrom(
-            LoggerServiceProvider::CONFIG_FILE, $this->packageKey()
-        ) ;
+        $this->mergeConfigFrom(LoggerServiceProvider::CONFIG_FILE, $this->packageKey()) ;
     }
 
     /**
@@ -47,8 +45,10 @@ class LoggerServiceProvider extends ServiceProvider {
             LoggerServiceProvider::CONFIG_FILE, config_path($this->packageKey().'.php'), 'config'
         ) ;
 
-        // Add the database query listener.
+        // Add the log listeners.
         Logger::database()->listener() ;
+        Logger::job()->listenFailingJobs() ;
+        Logger::job()->listenProcessingJobs() ;
     }
   
     /**

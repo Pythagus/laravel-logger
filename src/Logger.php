@@ -5,11 +5,12 @@ namespace Pythagus\LaravelLogger;
 use Throwable;
 use anlutro\cURL\cURL;
 use Illuminate\Http\Request;
+use Pythagus\LaravelLogger\Loggers\JobLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Pythagus\LaravelLogger\Loggers\RequestLogger;
 use Pythagus\LaravelLogger\Loggers\ResponseLogger;
-use Pythagus\LaravelLogger\Loggers\DatabaseQueryLogger;
 use Pythagus\LaravelLogger\Loggers\ExceptionLogger;
+use Pythagus\LaravelLogger\Loggers\DatabaseQueryLogger;
 
 /**
  * Class Logger
@@ -35,6 +36,15 @@ class Logger {
      */
     public static function error() {
         return new ExceptionLogger() ;
+    }
+
+    /**
+     * Create a new JobLogger instance.
+     *
+     * @return JobLogger
+     */
+    public static function job() {
+        return new JobLogger() ;
     }
 
     /**

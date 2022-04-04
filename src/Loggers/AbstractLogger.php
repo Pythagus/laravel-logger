@@ -34,9 +34,10 @@ abstract class AbstractLogger {
      * Send the object to the Logger server.
      *
      * @param object $object
+     * @param array $additionalData
      * @return void
      */
-    public function register(object $object) {
+    public function register(object $object, array $additionalData = []) {
         if(! empty($this->class) && ! ($object instanceof $this->class)) {
             // TODO send an error log.
             return ;
@@ -44,7 +45,7 @@ abstract class AbstractLogger {
 
         $data = array_merge([
             'uuid' => LoggerMiddleware::getRequestUuid(request()),
-        ], $this->objectAsArray($object)) ;
+        ], $this->objectAsArray($object), $additionalData) ;
 
         Logger::send($data) ;
     }
