@@ -76,15 +76,8 @@ class Logger {
      */
     public static function send(array $data) {
         try {
-            // TODO to delete
-            FileLogger::report($data) ;
-
-            echo "<pre>" ;
-            var_dump($data) ;
-            //exit ;
-
-            $request = (new cURL())->newJsonRequest('POST', 'localhost', $data) ;
-            $request->setHeader('x-api-key', 'KEY') ;
+            $request = (new cURL())->newJsonRequest('POST', config('logger.url'), $data) ;
+            $request->setHeader('x-api-key', config('logger.key')) ;
             $request->send() ;
         } catch(Throwable $ignored) {}
     }
