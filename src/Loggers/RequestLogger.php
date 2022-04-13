@@ -45,7 +45,7 @@ class RequestLogger extends AbstractLogger {
             'version' => $request->getProtocolVersion(),
             'ip'      => $request->ip(),
             'user'    => $user ? $user->toArray() : null,
-            'content' => $request->except('password', 'password_confirmation'),
+            'content' => $request->except(config('logger.except')),
         ] ;
 
         // Route can be null when an exception occured
