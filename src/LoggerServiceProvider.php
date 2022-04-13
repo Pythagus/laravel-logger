@@ -32,7 +32,7 @@ class LoggerServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        $this->mergeConfigFrom(LoggerServiceProvider::CONFIG_FILE, $this->packageKey()) ;
+        $this->mergeConfigFrom(LoggerServiceProvider::CONFIG_FILE, LoggerServiceProvider::PACKAGE_SLUG) ;
     }
 
     /**
@@ -41,34 +41,13 @@ class LoggerServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        $this->publish(
-            LoggerServiceProvider::CONFIG_FILE, config_path($this->packageKey().'.php'), 'config'
-        ) ;
+        $this->publishes([
+            LoggerServiceProvider::CONFIG_FILE => config_path('logger.php')
+        ], LoggerServiceProvider::PACKAGE_SLUG . '-config') ;
 
         // Add the log listeners.
         Logger::database()->listener() ;
         Logger::job()->listenFailingJobs() ;
         Logger::job()->listenProcessingJobs() ;
-    }
-  
-    /**
-     * Get the package key for the Laravel artisan.
-     *
-     * @param string|null $key
-     * @return string
-     */
-    private function packageKey(string $key = null) {
-        return LoggerServiceProvider::PACKAGE_SLUG . (is_null($key) ? "" : '-' . $key) ;
-    }
-
-    /**
-     * Publish the given file.
-     *
-     * @param string $file
-     * @param string $destination
-     * @param string|null $group
-     */
-    private function publish(string $file, string $destination, string $group = null) {
-        $this->publishes([$file => $destination], $group ? $this->packageKey($group) : null) ;
     }
 }
