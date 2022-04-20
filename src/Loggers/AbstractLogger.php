@@ -38,6 +38,12 @@ abstract class AbstractLogger {
      * @return void
      */
     public function register(object $object, array $additionalData = []) {
+        // Don't do anything if the logger is
+        // not enabled.
+        if(! config('logger.enabled', false)) {
+            return ;
+        }
+
         if(! empty($this->class) && ! ($object instanceof $this->class)) {
             // TODO send an error log.
             return ;

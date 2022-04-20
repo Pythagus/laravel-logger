@@ -26,6 +26,18 @@ return [
 
     /*
     |------------------------------------------
+    | Logger enabling mode.
+    |------------------------------------------
+    |
+    | This value determines whether logs will be
+    | sent to the receiving website. For example,
+    | you can specify an environment test to provide
+    | logs only on production.
+    */
+    'enabled' => (bool) env('LOGGER_ENABLED', false),
+
+    /*
+    |------------------------------------------
     | Main website URL.
     |------------------------------------------
     |
