@@ -3,7 +3,6 @@
 namespace Pythagus\LaravelLogger\Http;
 
 use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Pythagus\LaravelLogger\Logger;
@@ -57,7 +56,7 @@ class LoggerMiddleware {
         $uuid = $request->headers->get(LoggerMiddleware::HEADER_KEY) ;
 
         if(is_null($uuid)) {
-            $uuid = Str::uuid()->toString() ;
+            $uuid = Logger::generateUuid() ;
         }
 
         return $uuid ;

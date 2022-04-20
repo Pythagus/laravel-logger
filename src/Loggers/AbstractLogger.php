@@ -6,6 +6,7 @@ use Pythagus\LaravelLogger\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Pythagus\LaravelLogger\Http\LoggerMiddleware;
+use Pythagus\LaravelLogger\Loggers\Support\UuidCache;
 
 /**
  * Class AbstractLogger
@@ -16,6 +17,13 @@ use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 abstract class AbstractLogger {
 
     /**
+     * UUID field key in the array.
+     * 
+     * @var string
+     */
+    public const UUID = 'uuid' ;
+
+    /**
      * Class the object must be instance of.
      * Leave empty to bypass the test.
      *
@@ -24,11 +32,27 @@ abstract class AbstractLogger {
     protected $class = null ;
 
     /**
+     * UUID cache instance.
+     *
+     * @var UuidCache
+     */
+    protected $uuid ;
+
+    /**
      * Convert the given object to an array.
      *
      * @param object $object
      */
     abstract protected function objectAsArray(object $object): array ;
+
+    /**
+     * Create a new logger instance.
+     * 
+     * @return static
+     */
+    public function __construct() {
+        $this->uuid = new UuidCache() ;
+    }
 
     /**
      * Send the object to the Logger server.
@@ -44,16 +68,23 @@ abstract class AbstractLogger {
             return ;
         }
 
+        // If there is a type error, then alerts the developper.
         if(! empty($this->class) && ! ($object instanceof $this->class)) {
             // TODO send an error log.
             return ;
         }
 
-        $data = array_merge([
+        // If there is a UUID in the additional data, then
+        // keep it. If not, then generates a new value.
+        $uuid = array_key_exists(static::UUID, $additionalData) ? [] : [
             'uuid' => LoggerMiddleware::getRequestUuid(request()),
-        ], $this->objectAsArray($object), $additionalData) ;
+        ] ;
 
-        Logger::send($data) ;
+        // Merge all the data into a single array and
+        // send it through the logger.
+        Logger::send(
+            array_merge($uuid, $this->objectAsArray($object), $additionalData)
+        ) ;
     }
 
     /**
