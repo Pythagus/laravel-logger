@@ -6,9 +6,9 @@ use Throwable;
 use anlutro\cURL\cURL;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Pythagus\LaravelLogger\Loggers\CommandLogger;
 use Pythagus\LaravelLogger\Loggers\JobLogger;
 use Symfony\Component\HttpFoundation\Response;
+use Pythagus\LaravelLogger\Loggers\CommandLogger;
 use Pythagus\LaravelLogger\Loggers\RequestLogger;
 use Pythagus\LaravelLogger\Loggers\ResponseLogger;
 use Pythagus\LaravelLogger\Loggers\ExceptionLogger;
@@ -22,6 +22,14 @@ use Pythagus\LaravelLogger\Loggers\ScheduledTaskLogger;
  * @author: Damien MOLINA
  */
 class Logger {
+
+    /**
+     * Version of the package for retro
+     * compatibility.
+     * 
+     * @var string
+     */
+    public const VERSION = '1.0' ;
 
     /**
      * Create a new DatabaseQueryLogger instance.

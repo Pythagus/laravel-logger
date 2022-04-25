@@ -3,7 +3,6 @@
 namespace Pythagus\LaravelLogger\Loggers;
 
 use Pythagus\LaravelLogger\Logger;
-use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 use Pythagus\LaravelLogger\Loggers\Support\UuidCache;
 
 /**
@@ -68,9 +67,11 @@ abstract class AbstractLogger {
 
         // Merge all the data into a single array and
         // send it through the logger.
-        Logger::send(array_merge([
+        Logger::send([
             'uuid' => $additionalData[static::UUID] ?? null,
             'type' => static::$type,
-        ], static::objectToArray($object), $additionalData)) ;
+            'data' => array_merge($additionalData, static::objectToArray($object)),
+            'version' => Logger::VERSION,
+        ]) ;
     }
 }
