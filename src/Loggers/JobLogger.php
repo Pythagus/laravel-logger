@@ -30,11 +30,11 @@ class JobLogger extends AbstractLogger {
      *
      * @param JobProcessing $event
      */
-    protected function objectAsArray($event): array {
+    public static function objectToArray($event): array {
         return array_merge([
             'connection' => $event->connectionName,
             'status'     => 'processing'
-        ], $this->getJobData($event->job)) ;
+        ], static::getJobData($event->job)) ;
     }
 
     /**
@@ -42,7 +42,7 @@ class JobLogger extends AbstractLogger {
      * 
      * @return array
      */
-    protected function getJobData(Job $job) {
+    protected static function getJobData(Job $job) {
         return [
             'queue' => $job->getQueue(),
             'job'   => [
@@ -64,7 +64,7 @@ class JobLogger extends AbstractLogger {
             Logger::error()->register($event->exception, array_merge([
                 'connection' => $event->connectionName,
                 'status'     => 'failed',
-            ], $this->getJobData($event->job))) ;
+            ], static::getJobData($event->job))) ;
         }) ;
     }
 

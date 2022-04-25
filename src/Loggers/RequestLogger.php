@@ -25,7 +25,7 @@ class RequestLogger extends AbstractLogger {
      *
      * @param Request $request
      */
-    protected function objectAsArray($request): array {
+    public static function objectToArray($request): array {
         $user = $request->user() ;
         $data = [
             'header' => [

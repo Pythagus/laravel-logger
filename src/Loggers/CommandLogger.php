@@ -28,7 +28,7 @@ class CommandLogger extends AbstractLogger implements CommandContract {
      *
      * @param CommandStarting|CommandFinished $event
      */
-    protected function objectAsArray($event): array {
+    public static function objectToArray($event): array {
         return [
             'command' => $event->command,
         ] ;

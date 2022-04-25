@@ -30,7 +30,7 @@ class ScheduledTaskLogger extends AbstractLogger implements CommandContract {
      *
      * @param ScheduledEvent $event
      */
-    protected function objectAsArray($event): array {
+    public static function objectToArray($event): array {
         return [
             'task' => [
                 'command'    => $event->command,

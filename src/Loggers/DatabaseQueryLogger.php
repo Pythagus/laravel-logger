@@ -26,7 +26,7 @@ class DatabaseQueryLogger extends AbstractLogger {
      *
      * @param QueryExecuted $event
      */
-    protected function objectAsArray($event): array {
+    public static function objectToArray($event): array {
         return [
             'query' => [
                 'sql'            => $event->sql,

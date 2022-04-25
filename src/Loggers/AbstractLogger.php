@@ -43,7 +43,7 @@ abstract class AbstractLogger {
      *
      * @param object $object
      */
-    abstract protected function objectAsArray(object $object): array ;
+    abstract public static function objectToArray(object $object): array ;
 
     /**
      * Create a new logger instance.
@@ -83,7 +83,7 @@ abstract class AbstractLogger {
         // Merge all the data into a single array and
         // send it through the logger.
         Logger::send(
-            array_merge($uuid, $this->objectAsArray($object), $additionalData)
+            array_merge($uuid, static::objectToArray($object), $additionalData)
         ) ;
     }
 

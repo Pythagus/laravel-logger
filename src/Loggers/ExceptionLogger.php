@@ -29,7 +29,7 @@ class ExceptionLogger extends AbstractLogger {
      *
      * @param Throwable $throwable
      */
-    protected function objectAsArray($throwable): array {
+    public static function objectToArray($throwable): array {
         return [
             'code'    => $throwable->getCode(),
             'line'    => $throwable->getLine(),
