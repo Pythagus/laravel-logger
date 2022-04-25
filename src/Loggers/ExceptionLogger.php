@@ -17,6 +17,14 @@ use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 class ExceptionLogger extends AbstractLogger {
 
     /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type = 'EXCEPTION' ;
+
+    /**
      * Convert the given throwable to an array.
      *
      * @param Throwable $throwable

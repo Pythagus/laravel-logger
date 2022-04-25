@@ -3,8 +3,6 @@
 namespace Pythagus\LaravelLogger\Loggers;
 
 use Pythagus\LaravelLogger\Logger;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 use Pythagus\LaravelLogger\Loggers\Support\UuidCache;
 
@@ -22,6 +20,14 @@ abstract class AbstractLogger {
      * @var string
      */
     public const UUID = 'uuid' ;
+
+    /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type ;
 
     /**
      * UUID cache instance.
@@ -60,29 +66,11 @@ abstract class AbstractLogger {
             return ;
         }
 
-        // If there is a UUID in the additional data, then
-        // keep it. If not, then generates a new value.
-        $uuid = array_key_exists(static::UUID, $additionalData) ? [] : [
-            'uuid' => LoggerMiddleware::getRequestUuid(request()),
-        ] ;
-
         // Merge all the data into a single array and
         // send it through the logger.
-        Logger::send(
-            array_merge($uuid, static::objectToArray($object), $additionalData)
-        ) ;
-    }
-
-    /**
-     * Get the header interesting values.
-     *
-     * @param Request|Response $object
-     * @return void
-     */
-    protected function getHttpHeader($object) {
-        return [
-            'user-agent' => $object->headers->get('user-agent'),
-            'accept'     => $object->headers->get('accept'),
-        ] ;
+        Logger::send(array_merge([
+            'uuid' => $additionalData[static::UUID] ?? null,
+            'type' => static::$type,
+        ], static::objectToArray($object), $additionalData)) ;
     }
 }

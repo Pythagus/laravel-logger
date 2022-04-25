@@ -14,6 +14,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ResponseLogger extends AbstractLogger {
 
     /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type = 'RESPONSE' ;
+
+    /**
      * Convert the given response to an array.
      *
      * @param Response $response

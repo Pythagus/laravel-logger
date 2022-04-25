@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 class RequestLogger extends AbstractLogger {
 
     /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type = 'REQUEST' ;
+
+    /**
      * Convert the given request to an array.
      *
      * @param Request $request

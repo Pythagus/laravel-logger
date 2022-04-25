@@ -14,6 +14,14 @@ use Illuminate\Database\Events\QueryExecuted;
 class DatabaseQueryLogger extends AbstractLogger {
 
     /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type = 'DATABASE_QUERY' ;
+
+    /**
      * Convert the given object to an array.
      *
      * @param QueryExecuted $event

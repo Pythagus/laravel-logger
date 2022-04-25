@@ -18,6 +18,14 @@ use \Illuminate\Console\Scheduling\Event as ScheduledEvent;
 class ScheduledTaskLogger extends AbstractLogger implements CommandContract {
 
     /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type = 'SCHEDULED_TASK' ;
+
+    /**
      * Convert the given event to an array.
      *
      * @param ScheduledEvent $event

@@ -16,6 +16,14 @@ use Illuminate\Queue\Events\JobProcessing;
 class JobLogger extends AbstractLogger {
 
     /**
+     * Logger type to identify logs in the
+     * receiving server.
+     *
+     * @var string
+     */
+    public static $type = 'JOB' ;
+
+    /**
      * Convert the given processing event to an array.
      *
      * @param JobProcessing $event
@@ -39,7 +47,7 @@ class JobLogger extends AbstractLogger {
      * @return void
      */
     public function listenFailingJobs() {
-        Event::failing(function(JobFailed $event) {
+        Event::listen(function(JobFailed $event) {
             $this->register($event, ExceptionLogger::objectToArray($event->exception)) ;
         }) ;
     }
