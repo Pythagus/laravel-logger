@@ -49,6 +49,7 @@ class LoggerServiceProvider extends ServiceProvider {
         Logger::database()->listener() ;
         Logger::job()->listenFailingJobs() ;
         Logger::job()->listenProcessingJobs() ;
+        Logger::job()->listenProcessedJobs() ;
         Logger::scheduledTask()->listeners() ;
         Logger::command()->listeners() ;
     }

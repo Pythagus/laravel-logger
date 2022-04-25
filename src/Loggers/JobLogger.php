@@ -3,8 +3,8 @@
 namespace Pythagus\LaravelLogger\Loggers;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 
 /**
@@ -33,13 +33,13 @@ class JobLogger extends AbstractLogger {
         ] ;
     }
 
-    /**œ
+    /**
      * Get the job failing logger closure.
      *
      * @return void
      */
     public function listenFailingJobs() {
-        Queue::failing(function(JobFailed $event) {
+        Event::failing(function(JobFailed $event) {
             $this->register($event, ExceptionLogger::objectToArray($event->exception)) ;
         }) ;
     }
@@ -54,5 +54,17 @@ class JobLogger extends AbstractLogger {
         Event::listen(function(JobProcessing $event) {
             $this->register($event) ;
         }) ;
+    }
+
+    /**
+     * Listen the processing jobs. This event is
+     * generated before executing the job.
+     *
+     * @return void
+     */
+    public function listenProcessedJobs() {
+        Event::listen(function(JobProcessed $event) {
+            $this->register($event) ;
+        });
     }
 }
