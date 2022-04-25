@@ -2,8 +2,6 @@
 
 namespace Pythagus\LaravelLogger\Loggers;
 
-use Pythagus\LaravelLogger\Logger;
-use Illuminate\Contracts\Queue\Job;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobFailed;
@@ -23,26 +21,15 @@ class JobLogger extends AbstractLogger {
      * @param JobProcessing $event
      */
     public static function objectToArray($event): array {
-        return array_merge([
-            'connection' => $event->connectionName,
-            'status'     => 'processing'
-        ], static::getJobData($event->job)) ;
-    }
-
-    /**
-     * Get the job data.
-     * 
-     * @return array
-     */
-    protected static function getJobData(Job $job) {
         return [
-            'queue' => $job->getQueue(),
-            'job'   => [
-                'id'       => $job->getJobId(),
-                'name'     => $job->getName(),
-                'payload'  => $job->payload(),
-                'attempts' => $job->attempts(),
-            ]
+            'connection' => $event->connectionName,
+            'queue'      => $event->job->getQueue(),
+            'job'        => [
+                'id'       => $event->job->getJobId(),
+                'name'     => $event->job->getName(),
+                'payload'  => $event->job->payload(),
+                'attempts' => $event->job->attempts(),
+            ],
         ] ;
     }
 
@@ -53,10 +40,7 @@ class JobLogger extends AbstractLogger {
      */
     public function listenFailingJobs() {
         Queue::failing(function(JobFailed $event) {
-            Logger::error()->register($event->exception, array_merge([
-                'connection' => $event->connectionName,
-                'status'     => 'failed',
-            ], static::getJobData($event->job))) ;
+            $this->register($event, ExceptionLogger::objectToArray($event->exception)) ;
         }) ;
     }
 
