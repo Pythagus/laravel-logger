@@ -14,14 +14,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ResponseLogger extends AbstractLogger {
 
     /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = Response::class ;
-
-    /**
      * Convert the given response to an array.
      *
      * @param Response $response

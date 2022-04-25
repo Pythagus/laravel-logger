@@ -18,14 +18,6 @@ use Illuminate\Queue\Events\JobProcessing;
 class JobLogger extends AbstractLogger {
 
     /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = JobProcessing::class;
-
-    /**
      * Convert the given processing event to an array.
      *
      * @param JobProcessing $event

@@ -17,14 +17,6 @@ use Pythagus\LaravelLogger\Http\LoggerMiddleware;
 class ExceptionLogger extends AbstractLogger {
 
     /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = Throwable::class ;
-
-    /**
      * Convert the given throwable to an array.
      *
      * @param Throwable $throwable

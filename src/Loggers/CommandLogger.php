@@ -14,15 +14,7 @@ use Pythagus\LaravelLogger\Contracts\CommandContract;
  * @author: Damien MOLINA
  */
 class CommandLogger extends AbstractLogger implements CommandContract {
-
-    /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = null ;
-
+    
     /**
      * Convert the given event to an array.
      *

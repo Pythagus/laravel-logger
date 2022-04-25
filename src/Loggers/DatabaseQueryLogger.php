@@ -14,14 +14,6 @@ use Illuminate\Database\Events\QueryExecuted;
 class DatabaseQueryLogger extends AbstractLogger {
 
     /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = QueryExecuted::class ;
-
-    /**
      * Convert the given object to an array.
      *
      * @param QueryExecuted $event

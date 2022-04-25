@@ -24,14 +24,6 @@ abstract class AbstractLogger {
     public const UUID = 'uuid' ;
 
     /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = null ;
-
-    /**
      * UUID cache instance.
      *
      * @var UuidCache
@@ -65,12 +57,6 @@ abstract class AbstractLogger {
         // Don't do anything if the logger is
         // not enabled.
         if(! config('logger.enabled', false)) {
-            return ;
-        }
-
-        // If there is a type error, then alerts the developper.
-        if(! empty($this->class) && ! ($object instanceof $this->class)) {
-            // TODO send an error log.
             return ;
         }
 

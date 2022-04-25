@@ -18,14 +18,6 @@ use \Illuminate\Console\Scheduling\Event as ScheduledEvent;
 class ScheduledTaskLogger extends AbstractLogger implements CommandContract {
 
     /**
-     * Class the object must be instance of.
-     * Leave empty to bypass the test.
-     *
-     * @var string|null
-     */
-    protected $class = ScheduledEvent::class ;
-
-    /**
      * Convert the given event to an array.
      *
      * @param ScheduledEvent $event
